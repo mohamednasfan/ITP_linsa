@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+
 * {
-  transition: all 0.5s;
+  transition: all 0.3s ease;
   text-decoration: none;
   margin: 0;
   font-family: "Roboto", sans-serif;
@@ -8,43 +9,173 @@
 
 .container_nav {
   display: flex;
+  flex-wrap: wrap; /* Allow wrapping to prevent overflow */
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .sidebar {
-  background: #05043f;
-  color: white;
+  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+  color: var(--light);
   height: 100vh;
-  padding: 0 10px 0 0;
-  display: block;
-  transition: all 0.5s;
+  width: 100%; /* Adjust width to fit the viewport */
+  max-width: 250px; /* Maintain a maximum width */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
   position: fixed;
+  z-index: 100;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
-.nav_logo{
-  width: 150px;
+
+.nav_header {
+  padding: 20px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav_logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  padding: 3px;
+  filter: brightness(1.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav_logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(80, 220, 220, 0.5);
+}
+
+.nav_items_container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0;
+  flex: 1;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .nav_item {
+  display: flex;
+  align-items: center;
   text-transform: capitalize;
-  font-size: 28px;
-  font-weight: bolder;
-  margin-top: 10px;
-  padding: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin: 5px 15px;
+  padding: 12px 15px;
+  border-radius: 8px;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav_item:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: transparent;
+  transition: all 0.3s ease;
 }
 
 .nav_item:hover {
-  background-color: white;
-  color: #1b4850;
-  padding: 10px;
-  border-radius: 0 30px 30px 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--primary-light);
+}
+
+.nav_item:hover:before {
+  background: var(--primary-light);
+}
+
+.nav_item.active {
+  background-color: rgba(36, 110, 175, 0.2);
+  color: var(--primary-light);
+  font-weight: 600;
+}
+
+.nav_item.active:before {
+  background: var(--primary-light);
+}
+
+.nav_item i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  min-width: 20px;
+  text-align: center;
 }
 
 .nav_item_main {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar_footer {
+  padding: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.logout_btn {
+  display: flex;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  margin: 15px;
+  padding: 10px;
+  background-color: rgba(36, 110, 175, 0.2);
+  color: var(--primary-light);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logout_btn:hover {
+  background-color: rgba(36, 110, 175, 0.4);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    max-width: 70px; /* Ensure no horizontal scrolling */
+  }
+  
+  .nav_item span {
+    display: none;
+  }
+  
+  .nav_item {
+    justify-content: center;
+  }
+  
+  .nav_item i {
+    margin-right: 0;
+    font-size: 1.4rem;
+  }
+  
+  .sidebar_footer {
+    display: none;
+  }
+  
+  .welcome_sub_box_admin {
+    margin-left: 80px !important;
+  }
 }

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import AfterNav from "../../Home/NavBar/AfterNav";
+import "./Stock.css";
+
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -26,18 +28,14 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
     if (!product) {
       console.error("Product details are undefined.");
-      // You can set an error message or take other actions here
       return;
     }
-
-    // Update cartMessage state to show a message after adding to cart
     setCartMessage("Item added to cart.");
-    // Example: Navigate to /add-cart with product details in state
     navigate("/add-cart", { state: { product } });
   };
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   const { name, image, location, price, code } = product;
@@ -45,26 +43,38 @@ const ProductDetails = () => {
   return (
     <div>
       <AfterNav />
-      <h1 className="topic_inventory">
-          Product 
-          <span className="sub_topic_inventory"> Detail</span>
+      <div className="product-details-container advanced-layout">
+        <h1 className="product-details-title">
+          Product <span>Details</span>
         </h1>
-
-      <div className="itemcard">
-        <div>
-          <h3 className="itm_name_view">{name}</h3>
-          <img src={image} alt={name} className="view_iten_img" />
-          <p className="itmname">Location: {location}</p>
-          <p className="itmname">Price: ${price}</p>
-          <p className="itmname">Code: {code}</p>
-          <button className="cart_cneter_btn" onClick={handleAddToCart}>Add to Cart</button>
-          <button
-              className="cart_cneter_btn"
-              onClick={() => (window.location.href = "/addrate")}
-            >
-              Add Feedback
-            </button>
-          {cartMessage && <div>{cartMessage}</div>}
+        <div className="product-card advanced-card large-card">
+          <div className="product-image-container">
+            <img src={image} alt={name} className="product-image" />
+          </div>
+          <div className="product-info">
+            <h2 className="product-name">{name}</h2>
+            <p className="product-detail">
+              <strong>Location:</strong> {location}
+            </p>
+            <p className="product-detail">
+              <strong>Price:</strong> ${price}
+            </p>
+            <p className="product-detail">
+              <strong>Code:</strong> {code}
+            </p>
+            <div className="product-actions">
+              <button className="btn-primary" onClick={handleAddToCart}>
+                Add to Cart
+              </button>
+              <button
+                className="btn-secondary"
+                onClick={() => (window.location.href = "/addrate")}
+              >
+                Add Feedback
+              </button>
+            </div>
+            {cartMessage && <div className="cart-message">{cartMessage}</div>}
+          </div>
         </div>
       </div>
     </div>

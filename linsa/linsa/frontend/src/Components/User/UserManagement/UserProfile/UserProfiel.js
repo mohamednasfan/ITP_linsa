@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "../User.css";
 import AfterNav from "../../Home/NavBar/AfterNav";
+
 function UserProfile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,14 +17,14 @@ function UserProfile() {
           token: token,
         });
         if (response.data.status === "ok") {
-          setUser(response.data.user); // Update user state with received user data
+          setUser(response.data.user);
         } else {
           console.error("Error retrieving user details:", response.data.data);
         }
       } catch (error) {
         console.error("Error retrieving user details:", error.message);
       } finally {
-        setLoading(false); // Update loading state regardless of success or error
+        setLoading(false);
       }
     }
 
@@ -33,18 +33,17 @@ function UserProfile() {
 
   const deleteHandler = async () => {
     const userConfirmed = window.confirm(
-      "Are you sure you want to delete account?"
+      "Are you sure you want to delete your account?"
     );
 
     if (userConfirmed) {
       try {
         await axios.delete(`http://localhost:5000/user/${user._id}`);
-        window.alert("account details deleted successfully!");
+        window.alert("Account deleted successfully!");
         history("/");
-        window.location.reload(); // Reload the page
+        window.location.reload();
       } catch (error) {
-        // Handle deletion error if needed
-        console.error("Error deleting account details:", error);
+        console.error("Error deleting account:", error);
       }
     }
   };
@@ -52,40 +51,37 @@ function UserProfile() {
   return (
     <div>
       <AfterNav />
-      <br></br> <br></br>
-      <div>
-        <h1 className="login-topic">Welcome Back {user ? user.name : ""} </h1>
-        <br></br>
-        <div className="user_profile">
-          <div>
-            {loading ? (
-              <p>Loading user details...</p>
-            ) : user ? (
-              <div>
-                <div>
-                  <h3 className="profile_item">Name : {user.name}</h3>
-                  <h3 className="profile_item"> Gmail : {user.email}</h3>
-                  <h3 className="profile_item">Address : {user.address}</h3>
-                  <h3 className="profile_item">Phone : {user.phone}</h3>
-                </div>
-              </div>
-            ) : (
-              <p>User data not found.</p>
-            )}
-            <div className="btn_con">
-              {user && (
+      <div className="children_div_admin">
+        <h1 className="topic_mash_mart">
+          Welcome Back, {user ? user.name : "User"}
+        </h1>
+        <div className="tbl_con_admin">
+          {loading ? (
+            <p>Loading user details...</p>
+          ) : user ? (
+            <div>
+              <h3 className="profile_item">Name: {user.name}</h3>
+              <h3 className="profile_item">Email: {user.email}</h3>
+              <h3 className="profile_item">Address: {user.address}</h3>
+              <h3 className="profile_item">Phone: {user.phone}</h3>
+              <div className="btn_con">
                 <Link
                   className="btn_dash_admin"
                   to={`/updateaccount/${user._id}`}
                 >
                   Update
                 </Link>
-              )}
-              <button onClick={deleteHandler} className="btn_dash_admin_dlt">
-                Delete
-              </button>
+                <button
+                  onClick={deleteHandler}
+                  className="btn_dash_admin_dlt"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <p>User data not found.</p>
+          )}
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import AfterNav from "../../Home/NavBar/AfterNav";
+
 const AddToCart = () => {
   const history = useNavigate();
   const location = useLocation();
@@ -67,8 +68,9 @@ const AddToCart = () => {
         </h1>
         <div className="item_full_box">
           <form className="item_form_admin" onSubmit={handleSubmit}>
-            <div>
-              <label className="form_box_item_lable">Name:</label>
+            <h2 className="form_title">Add Item to Cart</h2>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
@@ -77,11 +79,12 @@ const AddToCart = () => {
                 onChange={handleChange}
                 readOnly
                 required
+                placeholder="Item Name"
               />
+              <label className="form_box_item_lable" htmlFor="name">Item Name</label>
             </div>
 
-            <div>
-              <label className="form_box_item_lable">Price:</label>
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="number"
@@ -90,10 +93,12 @@ const AddToCart = () => {
                 onChange={handleChange}
                 readOnly
                 required
+                placeholder="Price"
               />
+              <label className="form_box_item_lable" htmlFor="price">Price</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Quantity:</label>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="number"
@@ -102,19 +107,25 @@ const AddToCart = () => {
                 onChange={handleChange}
                 min="1"
                 required
+                placeholder="Quantity"
               />
+              <label className="form_box_item_lable" htmlFor="qty">Quantity</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Total:</label>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
                 name="total"
                 value={item.total}
                 readOnly
+                placeholder="Total"
               />
+              <label className="form_box_item_lable" htmlFor="total">Total</label>
             </div>
-            {error && <p className="cart-error-message">{error}</p>}
+
+            {error && <div className="cart-error-message">{error}</div>}
+
             <button className="admin_form_cneter_btn" type="submit">
               Add to Cart
             </button>

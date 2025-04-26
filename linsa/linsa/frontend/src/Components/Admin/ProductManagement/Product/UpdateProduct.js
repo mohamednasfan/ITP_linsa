@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom"; // Import useParams and useNavigate hooks
+import { useParams, useNavigate } from "react-router-dom";
 import Sidebar from "../../AdminDashBord/SideBar/Sidebar";
 
 const UpdateProduct = () => {
-  const { id } = useParams(); // Use useParams hook to get the route parameter
-  const navigate = useNavigate(); // Use useNavigate hook for navigation
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,104 +19,134 @@ const UpdateProduct = () => {
         setProduct(response.data.product);
         setLoading(false);
       } catch (error) {
-        setError("Error fetching product details."); // Set error message on fetch failure
+        setError("Error fetching product details.");
         setLoading(false);
       }
     };
 
     fetchProduct();
-  }, [id]); // Include id in dependency array to fetch data when id changes
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:5000/products/${id}`, product);
       alert("Product updated successfully.");
-      navigate("/admin-allproducts"); // Navigate to /admin-allproducts after successful update
+      navigate("/admin-allproducts");
     } catch (error) {
-      setError("Error updating product."); // Set error message on update failure
+      setError("Error updating product.");
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading_spinner">
+        <div className="spinner"></div>
+        <p className="loading_text">Loading product data...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="children_div_admin">
+        <div className="product-error-message">Error: {error}</div>
+      </div>
+    );
   }
 
-  // Render the UI with fetched product details and update form
   return (
     <div>
       <Sidebar />
       <div className="children_div_admin">
         <h1 className="topic_mash_mart">
-          Update
-          <span className="sub_topic_mash_mart"> Product</span>{" "}
+          Update<span className="sub_topic_mash_mart"> Product</span>
         </h1>
+        
         <div className="item_full_box">
           <form className="item_form_admin" onSubmit={handleSubmit}>
-            <div>
-              <label className="form_box_item_lable">Name:</label>
+            <h2 className="form_title">Edit Product Details</h2>
+            
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
-                value={product.name}
+                id="name"
+                value={product.name || ""}
                 onChange={(e) =>
                   setProduct({ ...product, name: e.target.value })
                 }
+                placeholder="Product Name"
+                required
               />
+              <label className="form_box_item_lable" htmlFor="name">Product Name</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Image URL:</label>
+            
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
-                value={product.image}
+                id="image"
+                value={product.image || ""}
                 onChange={(e) =>
                   setProduct({ ...product, image: e.target.value })
                 }
+                placeholder="Image URL"
+                required
               />
+              <label className="form_box_item_lable" htmlFor="image">Image URL</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Location:</label>
+            
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
-                value={product.location}
+                id="location"
+                value={product.location || ""}
                 onChange={(e) =>
                   setProduct({ ...product, location: e.target.value })
                 }
-              />
-            </div>
-            <div>
-              <label className="form_box_item_lable">Price:</label>
-              <input
-                className="form_box_item_input"
-                type="number"
-                min="1"
-                value={product.price}
-                onChange={(e) =>
-                  setProduct({ ...product, price: e.target.value })
-                }
+                placeholder="Location"
                 required
-
               />
+              <label className="form_box_item_lable" htmlFor="location">Location</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Code:</label>
-              <input
-                className="form_box_item_input"
-                type="text"
-                value={product.code}
-                onChange={(e) =>
-                  setProduct({ ...product, code: e.target.value })
-                }
-              />
+            
+            <div className="form_row">
+              <div className="form_group">
+                <input
+                  className="form_box_item_input"
+                  type="number"
+                  id="price"
+                  min="1"
+                  value={product.price || ""}
+                  onChange={(e) =>
+                    setProduct({ ...product, price: e.target.value })
+                  }
+                  placeholder="Price"
+                  required
+                />
+                <label className="form_box_item_lable" htmlFor="price">Price</label>
+              </div>
+              
+              <div className="form_group">
+                <input
+                  className="form_box_item_input"
+                  type="text"
+                  id="code"
+                  value={product.code || ""}
+                  onChange={(e) =>
+                    setProduct({ ...product, code: e.target.value })
+                  }
+                  placeholder="Product Code"
+                  required
+                />
+                <label className="form_box_item_lable" htmlFor="code">Product Code</label>
+              </div>
             </div>
+            
             <button type="submit" className="admin_form_cneter_btn">
-              Update
+              Update Product
             </button>
           </form>
         </div>

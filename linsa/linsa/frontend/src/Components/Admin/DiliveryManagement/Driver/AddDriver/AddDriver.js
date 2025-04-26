@@ -4,13 +4,16 @@ import axios from "axios";
 import Sidebar from "../../../AdminDashBord/SideBar/Sidebar";
 
 function AddDriver() {
-  const navigate = useNavigate(); // Changed variable name to navigate
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     name: "",
     gmail: "",
     phone: "",
     address: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs((prevInputs) => ({
@@ -21,76 +24,101 @@ function AddDriver() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputs);
-    await sendRequest();
-    window.alert("Driver Account Create successfully!");
-    navigate("/driverdetails");
+    setLoading(true);
+    try {
+      await axios.post("http://localhost:5000/drive", inputs);
+      setLoading(false);
+      alert("Driver Account Created successfully!");
+      navigate("/driverdetails");
+    } catch (error) {
+      console.error("Error submitting driver:", error);
+      setError("Error submitting driver. Please try again.");
+      setLoading(false);
+    }
   };
-  const sendRequest = async () => {
-    await axios.post("http://localhost:5000/drive", {
-      name: inputs.name,
-      gmail: inputs.gmail,
-      phone: inputs.phone,
-      address: inputs.address,
-    });
-  };
+
+  if (loading) {
+    return (
+      <div className="loading_spinner">
+        <div className="spinner"></div>
+        <p className="loading_text">Creating driver account...</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <Sidebar/>
+      <Sidebar />
       <div className="children_div_admin">
         <h1 className="topic_mash_mart">
-          Create Account For
-          <span className="sub_topic_mash_mart"> Driver</span>{" "}
+          Create Account For<span className="sub_topic_mash_mart"> Driver</span>
         </h1>
+        
         <div className="item_full_box">
           <form className="item_form_admin" onSubmit={handleSubmit}>
-            <label className="form_box_item_lable">name</label>
-            <br></br>
-            <input
-              className="form_box_item_input"
-              type="text"
-              required
-              value={inputs.name}
-              onChange={handleChange}
-              name="name"
-            />
-            <br></br>
-            <label className="form_box_item_lable">gmail</label>
-            <br></br>
-            <input
-              className="form_box_item_input"
-              type="email"
-              value={inputs.gmail}
-              onChange={handleChange}
-              name="gmail"
-              required
-            />
-            <br></br>
-            <label className="form_box_item_lable">phone</label>
-            <br></br>
-            <input
-              className="form_box_item_input"
-              type="text"
-              pattern="[0-9]{10}" 
-              value={inputs.phone}
-              onChange={handleChange}
-              name="phone"
-              required
-            />
-            <br></br>
-            <label className="form_box_item_lable">address</label>
-            <br></br>
-            <input
-              className="form_box_item_input"
-              type="text"
-              value={inputs.address}
-              onChange={handleChange}
-              name="address"
-              required
-            />
-            <br></br>
+            <h2 className="form_title">Driver Information</h2>
+            
+            <div className="form_group">
+              <input
+                className="form_box_item_input"
+                type="text"
+                name="name"
+                id="name"
+                value={inputs.name}
+                onChange={handleChange}
+                required
+                placeholder="Driver Name"
+              />
+              <label className="form_box_item_lable" htmlFor="name">Driver Name</label>
+            </div>
+            
+            <div className="form_group">
+              <input
+                className="form_box_item_input"
+                type="email"
+                name="gmail"
+                id="gmail"
+                value={inputs.gmail}
+                onChange={handleChange}
+                required
+                placeholder="Email"
+              />
+              <label className="form_box_item_lable" htmlFor="gmail">Email</label>
+            </div>
+            
+            <div className="form_group">
+              <input
+                className="form_box_item_input"
+                type="text"
+                name="phone"
+                id="phone"
+                pattern="[0-9]{10}"
+                value={inputs.phone}
+                onChange={handleChange}
+                required
+                placeholder="Phone Number"
+              />
+              <label className="form_box_item_lable" htmlFor="phone">Phone Number</label>
+            </div>
+            
+            <div className="form_group">
+              <input
+                className="form_box_item_input"
+                type="text"
+                name="address"
+                id="address"
+                value={inputs.address}
+                onChange={handleChange}
+                required
+                placeholder="Address"
+              />
+              <label className="form_box_item_lable" htmlFor="address">Address</label>
+            </div>
+            
+            {error && <div className="driver-error-message">{error}</div>}
+            
             <button type="submit" className="admin_form_cneter_btn">
-              Submit
+              Create Account
             </button>
           </form>
         </div>

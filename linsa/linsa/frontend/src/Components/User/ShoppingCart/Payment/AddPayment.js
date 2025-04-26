@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 const AddPayment = ({ cartItems }) => {
   const navigate = useNavigate();
   const [payment, setPayment] = useState({
-    amount: 0, // Initialize amount to 0
+    amount: 0,
     currency: "LKR",
     cardNumber: "",
     cardExpiry: "",
@@ -12,6 +13,7 @@ const AddPayment = ({ cartItems }) => {
     status: "pending",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (cartItems && cartItems.length > 0) {
@@ -26,22 +28,6 @@ const AddPayment = ({ cartItems }) => {
     }
   }, [cartItems]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Submitting payment...");
-    try {
-      await axios.post("http://localhost:5000/payments/", payment);
-      alert("Payment added successfully.");
-      navigate("/adddlilivey");
-    } catch (error) {
-      console.error(
-        "Error adding payment:",
-        error.response.data.message || "Server error"
-      );
-      setError(error.response.data.message || "Server error");
-    }
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPayment((prevPayment) => ({
@@ -50,37 +36,69 @@ const AddPayment = ({ cartItems }) => {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.post("http://localhost:5000/payments/", payment);
+      setLoading(false);
+      alert("Payment added successfully.");
+      navigate("/adddlilivey");
+    } catch (error) {
+      console.error("Error adding payment:", error);
+      setError(error.response?.data?.message || "Server error");
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="loading_spinner">
+        <div className="spinner"></div>
+        <p className="loading_text">Processing payment...</p>
+      </div>
+    );
+  }
+
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
+
   return (
     <div>
       <div className="payment-container">
         <h1 className="topic_mash_mart">
-          Add
-          <span className="sub_topic_mash_mart"> Payment</span>{" "}
+          Add<span className="sub_topic_mash_mart"> Payment</span>
         </h1>
+
         <div className="item_full_box">
           <form className="item_form_admin" onSubmit={handleSubmit}>
-            <div>
-              <label className="form_box_item_lable">Amount:</label>
+            <h2 className="form_title">Payment Information</h2>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="number"
                 name="amount"
                 value={payment.amount}
                 readOnly
+                placeholder="Amount"
               />
+              <label className="form_box_item_lable">Amount</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Currency:</label>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
                 name="currency"
                 value={payment.currency}
                 readOnly
+                placeholder="Currency"
               />
+              <label className="form_box_item_lable">Currency</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Card Number:</label>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
@@ -88,10 +106,12 @@ const AddPayment = ({ cartItems }) => {
                 value={payment.cardNumber}
                 onChange={handleChange}
                 required
+                placeholder="Card Number"
               />
+              <label className="form_box_item_lable">Card Number</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">Card Expiry:</label>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="date"
@@ -99,10 +119,13 @@ const AddPayment = ({ cartItems }) => {
                 value={payment.cardExpiry}
                 onChange={handleChange}
                 required
+                min={today} // Restrict to dates from today onward
+                placeholder="Card Expiry"
               />
+              <label className="form_box_item_lable">Card Expiry</label>
             </div>
-            <div>
-              <label className="form_box_item_lable">CVV:</label>
+
+            <div className="form_group">
               <input
                 className="form_box_item_input"
                 type="text"
@@ -110,12 +133,16 @@ const AddPayment = ({ cartItems }) => {
                 value={payment.cvv}
                 onChange={handleChange}
                 required
+                placeholder="CVV"
               />
+              <label className="form_box_item_lable">CVV</label>
             </div>
-            <button className="admin_form_cneter_btn" type="submit">
+
+            {error && <div className="payment-error-message">{error}</div>}
+
+            <button type="submit" className="admin_form_cneter_btn">
               Pay
             </button>
-            {error && <p className="payment-error-message">{error}</p>}
           </form>
         </div>
       </div>

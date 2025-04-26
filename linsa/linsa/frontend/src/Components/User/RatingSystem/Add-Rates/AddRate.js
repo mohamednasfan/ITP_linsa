@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
-import "./AddRate.css";
 import AfterNav from "../../Home/NavBar/AfterNav";
 function AddRate() {
   const navigate = useNavigate();

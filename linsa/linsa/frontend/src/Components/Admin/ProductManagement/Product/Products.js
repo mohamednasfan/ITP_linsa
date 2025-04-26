@@ -22,11 +22,12 @@ const Product = ({ product, onDelete }) => {
       }
     }
   };
+  
   return (
     <tr className="admin_tbl_tr">
       <td className="admin_tbl_td">{name}</td>
       <td className="admin_tbl_td">
-        <img src={image} alt={name} style={{ width: "50px", height: "50px" }} />
+        <img src={image} alt={name} className="product_img" />
       </td>
       <td className="admin_tbl_td">{location}</td>
       <td className="admin_tbl_td">Rs.{price}.00</td>
@@ -108,54 +109,60 @@ const Products = () => {
             Add New Product
           </button>
 
-          <tr>
-            <td className="">
-              <input
-                onChange={(e) => setSearchQuery(e.target.value)}
-                type="text"
-                name="search"
-                className="serch_inpt"
-                placeholder="Search Here..."
-              ></input>
-            </td>
-
-            <td>
-              <button onClick={handleSearch} className="btn_dash_admin">
-                Search
-              </button>
-            </td>
-          </tr>
+          <div className="search_container">
+            <input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              type="text"
+              name="search"
+              className="serch_inpt"
+              placeholder="Search products..."
+            />
+            <button onClick={handleSearch} className="btn_dash_admin">
+              Search
+            </button>
+          </div>
+          
           <button className="btn_dash_admin" onClick={handlePrint}>
             Generate Report
           </button>
         </div>
+        
         <div className="tbl_con_admin" ref={ComponentsRef}>
           <h1 className="topic_inventory">
-            Product
-            <span className="sub_topic_inventory"> List</span>{" "}
+            Product<span className="sub_topic_inventory"> List</span>
           </h1>
-          {alertMessage && <div style={{ color: "red" }}>{alertMessage}</div>}
-          <table className="table_details_admin">
-            <thead>
-              <tr className="admin_tbl_tr">
-                <th className="admin_tbl_th">Name</th>
-                <th className="admin_tbl_th">Image</th>
-                <th className="admin_tbl_th">Location</th>
-                <th className="admin_tbl_th">Price</th>
-                <th className="admin_tbl_th">Code</th>
-                <th className="admin_tbl_th">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <Product
-                  key={product._id}
-                  product={product}
-                  onDelete={handleDelete}
-                />
-              ))}
-            </tbody>
-          </table>
+          
+          {alertMessage && (
+            <div className="product-error-message">{alertMessage}</div>
+          )}
+          
+          {products.length === 0 && !alertMessage ? (
+            <div style={{ textAlign: 'center', padding: '30px 0' }}>
+              <p>No products found. Add a new product or try a different search.</p>
+            </div>
+          ) : (
+            <table className="table_details_admin">
+              <thead>
+                <tr className="admin_tbl_tr">
+                  <th className="admin_tbl_th">Name</th>
+                  <th className="admin_tbl_th">Image</th>
+                  <th className="admin_tbl_th">Location</th>
+                  <th className="admin_tbl_th">Price</th>
+                  <th className="admin_tbl_th">Code</th>
+                  <th className="admin_tbl_th">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <Product
+                    key={product._id}
+                    product={product}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>
