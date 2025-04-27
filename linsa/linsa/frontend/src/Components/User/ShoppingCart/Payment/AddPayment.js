@@ -38,6 +38,27 @@ const AddPayment = ({ cartItems }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation for card number
+    if (!/^\d{16}$/.test(payment.cardNumber)) {
+      setError("Card number must be 16 digits.");
+      return;
+    }
+
+    // Validation for CVV
+    if (!/^\d{3}$/.test(payment.cvv)) {
+      setError("CVV must be 3 digits.");
+      return;
+    }
+
+    // Validation for card expiry date
+    const expiryDate = new Date(payment.cardExpiry);
+    const today = new Date();
+    if (expiryDate <= today) {
+      setError("Card expiry date must be in the future.");
+      return;
+    }
+
     setLoading(true);
     try {
       await axios.post("http://localhost:5000/payments/", payment);
