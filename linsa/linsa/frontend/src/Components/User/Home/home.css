@@ -6,6 +6,12 @@
   background-size: cover; /* Ensure the background image covers the entire element */
   background-position: center; /* Center the background image */
 }
+
+.welcome_topic {
+  font-size: 70px;
+  color: #240f49; /* Updated color to Gold. You can change it */
+}
+
 .dis_div {
   display: flex;
   justify-content: center;
