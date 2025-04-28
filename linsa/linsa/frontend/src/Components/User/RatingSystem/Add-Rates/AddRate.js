@@ -1,19 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
 import AfterNav from "../../Home/NavBar/AfterNav";
+
 function AddRate() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    imgurl:"",
+    imgurl: "",
     username: "",
     email: "",
     rating: null,
     date: "",
     comment: "",
   });
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await axios.post("http://localhost:5000/profile", {
+            token: token,
+          });
+          if (response.data.status === "ok" && response.data.user) {
+            setInputs(prevState => ({
+              ...prevState,
+              email: response.data.user.email
+            }));
+          }
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setInputs((prevState) => ({
@@ -66,7 +90,7 @@ function AddRate() {
 
   return (
     <div>
-        <AfterNav />
+      <AfterNav />
       <div>
         <div className="rate-full-box">
           <div className="">
@@ -74,7 +98,7 @@ function AddRate() {
               Add <span className="rate-us">Feedback</span>{" "}
             </h1>
             <form onSubmit={handleSubmit} className="rate-full-box-form">
-            <label className="rate-full-box-label">img url</label>
+              <label className="rate-full-box-label">img url</label>
               <br></br>
               <input
                 type="text"
@@ -105,6 +129,7 @@ function AddRate() {
                 onChange={handleCommentChange}
                 className="rate-full-box-input"
                 required
+                readOnly
               />
               <br />
               <label className="rate-full-box-label">Rating</label>
