@@ -19,6 +19,11 @@ const DriveSchema = new Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ['available', 'busy', 'away'],
+    default: 'available'
+  }
 });
 
 module.exports = mongoose.model("Drive", DriveSchema);

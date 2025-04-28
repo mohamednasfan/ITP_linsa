@@ -61,7 +61,7 @@ const getById = async (req, res, next) => {
 //Update driv Details
 const updateDrive = async (req, res, next) => {
   const id = req.params.id;
-  const { name, gmail, address, phone } = req.body;
+  const { name, gmail, address, phone, status } = req.body;
 
   let drivs;
 
@@ -71,17 +71,24 @@ const updateDrive = async (req, res, next) => {
       gmail: gmail,
       address: address,
       phone: phone,
+      status: status
+    }, { new: true });
+
+    if (!drivs) {
+      return res.status(404).json({ message: "Unable to Update Drive Details" });
+    }
+
+    return res.status(200).json({ 
+      success: true,
+      drivs 
     });
-    drivs = await drivs.save();
   } catch (err) {
     console.log(err);
+    return res.status(500).json({ 
+      success: false,
+      message: "Error updating driver details" 
+    });
   }
-  if (!drivs) {
-    return res
-      .status(404)
-      .json({ message: "Unable to Update Drive Details" });
-  }
-  return res.status(200).json({ drivs });
 };
 
 //Delete driv Details

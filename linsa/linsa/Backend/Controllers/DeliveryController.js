@@ -1,6 +1,7 @@
 const Delivery = require("../Model/DeliveryModel");
 
-const getAllDeliveries = async (req, res, next) => {
+// Get all deliveries
+const getAllDeliveries = async (req, res) => {
   try {
     const deliveries = await Delivery.find();
     if (!deliveries || deliveries.length === 0) {
@@ -13,33 +14,65 @@ const getAllDeliveries = async (req, res, next) => {
   }
 };
 
-const getDeliveryById = async (req, res, next) => {
+// Get delivery by ID
+const getDeliveryById = async (req, res) => {
   const id = req.params.id;
 
-  let deliveries;
-
   try {
-    deliveries = await Delivery.findById(id);
+    const delivery = await Delivery.findById(id);
+    if (!delivery) {
+      return res.status(404).json({ message: "Delivery not found" });
+    }
+    return res.status(200).json({ delivery });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    return res.status(500).json({ message: "Error fetching delivery" });
   }
-  // not available drivs
-  if (!deliveries) {
-    return res.status(404).json({ message: "Drive Not Found" });
-  }
-  return res.status(200).json({ deliveries });
 };
 
-const addDelivery = async (req, res, next) => {
-  const { name, gmail, phone, locatin,status } = req.body;
+// Get delivery by Email
+const getDeliveryByEmail = async (req, res) => {
+  const email = req.params.email;
+
+  try {
+    const delivery = await Delivery.find({ email: email });
+    if (!delivery || delivery.length === 0) {
+      return res.status(404).json({ message: "No deliveries found for this email" });
+    }
+    return res.status(200).json({ delivery });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error fetching delivery" });
+  }
+};
+
+// Add a new delivery
+const addDelivery = async (req, res) => {
+  const {
+    name,
+    email,
+    phone,
+    province,
+    district,
+    city,
+    streetAddress,
+    postalCode,
+    deliveryTimeSlot,
+  } = req.body;
+
   try {
     const newDelivery = new Delivery({
       name,
-      gmail,
+      email,
       phone,
-      locatin,
-      status
+      province,
+      district,
+      city,
+      streetAddress,
+      postalCode,
+      deliveryTimeSlot,
     });
+
     await newDelivery.save();
     return res.status(201).json({ delivery: newDelivery });
   } catch (err) {
@@ -48,41 +81,61 @@ const addDelivery = async (req, res, next) => {
   }
 };
 
-const updateDelivery = async (req, res, next) => {
+// Update delivery by ID
+const updateDelivery = async (req, res) => {
   const id = req.params.id;
-  const { name, gmail, phone, locatin,status } = req.body;
-
-  let deliveries;
+  const {
+    name,
+    email,
+    phone,
+    province,
+    district,
+    city,
+    streetAddress,
+    postalCode,
+    deliveryTimeSlot,
+    status
+  } = req.body;
 
   try {
-    deliveries = await Delivery.findByIdAndUpdate(id, {
-      name: name,
-      gmail: gmail,
-      locatin: locatin,
-      phone: phone,
-      status:status,
-    });
-    deliveries = await deliveries.save();
+    const delivery = await Delivery.findByIdAndUpdate(
+      id,
+      {
+        name,
+        email,
+        phone,
+        province,
+        district,
+        city,
+        streetAddress,
+        postalCode,
+        deliveryTimeSlot,
+        status
+      },
+      { new: true }
+    );
+
+    if (!delivery) {
+      return res.status(404).json({ message: "Unable to update delivery" });
+    }
+
+    return res.status(200).json({ delivery });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
-  if (!deliveries) {
-    return res
-      .status(404)
-      .json({ message: "Unable to Update Drive Details" });
-  }
-  return res.status(200).json({ deliveries });
 };
 
-const deleteDelivery = async (req, res, next) => {
+// Delete delivery by ID
+const deleteDelivery = async (req, res) => {
   const id = req.params.id;
 
   try {
     const delivery = await Delivery.findByIdAndDelete(id);
     if (!delivery) {
-      return res.status(404).json({ message: "Unable to delete delivery details" });
+      return res.status(404).json({ message: "Unable to delete delivery" });
     }
-    return res.status(200).json({ delivery });
+    return res.status(200).json({ message: "Delivery deleted", delivery });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -92,6 +145,7 @@ const deleteDelivery = async (req, res, next) => {
 module.exports = {
   getAllDeliveries,
   getDeliveryById,
+  getDeliveryByEmail,
   addDelivery,
   updateDelivery,
   deleteDelivery,

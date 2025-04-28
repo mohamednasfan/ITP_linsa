@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useReactToPrint } from "react-to-print";
 import Sidebar from "../../../AdminDashBord/SideBar/Sidebar";
 
 const URL = "http://localhost:5000/vehical";
@@ -39,13 +38,6 @@ function VehicalDetails() {
       }
     }
   };
-  /*PDF Function */
-  const ComponentsRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => ComponentsRef.current,
-    DocumentTitle: " Details Report",
-    onafterprint: () => alert(" Details Report Successfully Download !"),
-  });
 
   /*Search Function */
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,6 +53,30 @@ function VehicalDetails() {
       setVehical(filtered);
       setNoResults(filtered.length === 0);
     });
+  };
+
+  const handleStatusChange = async (vehicalId, newStatus) => {
+    try {
+      const response = await axios.put(`${URL}/${vehicalId}`, {
+        status: newStatus
+      });
+      
+      if (response.data.vehis) {
+        setVehical(prevVehi =>
+          prevVehi.map(vehical =>
+            vehical._id === vehicalId
+              ? { ...vehical, status: newStatus }
+              : vehical
+          )
+        );
+        alert("Vehicle status updated successfully!");
+      } else {
+        throw new Error("Failed to update status");
+      }
+    } catch (error) {
+      console.error("Error updating vehicle status:", error);
+      alert("Failed to update vehicle status. Please try again.");
+    }
   };
 
   return (
@@ -92,12 +108,9 @@ function VehicalDetails() {
               </button>
             </td>
           </tr>
-          <button className="btn_dash_admin" onClick={handlePrint}>
-            Generate Report
-          </button>
         </div>
 
-        <div className="tbl_con_admin" ref={ComponentsRef}>
+        <div className="tbl_con_admin">
           <h1 className="topic_inventory">
             Vehicles
             <span className="sub_topic_inventory"> Details</span>{" "}
@@ -110,6 +123,7 @@ function VehicalDetails() {
                 <th className="admin_tbl_th">owener address</th>
                 <th className="admin_tbl_th">owener gmail</th>
                 <th className="admin_tbl_th">Number Plate</th>
+                <th className="admin_tbl_th">status</th>
                 <th className="admin_tbl_th">action</th>
               </tr>
             </thead>
@@ -129,6 +143,17 @@ function VehicalDetails() {
                     <td className="admin_tbl_td">{item.address}</td>
                     <td className="admin_tbl_td">{item.gmail}</td>
                     <td className="admin_tbl_td">{item.numberplate}</td>
+                    <td className="admin_tbl_td">
+                      <select
+                        value={item.status || 'available'}
+                        onChange={e => handleStatusChange(item._id, e.target.value)}
+                        className="status-select"
+                      >
+                        <option value="available">Available</option>
+                        <option value="busy">Busy</option>
+                        <option value="maintenance">Maintenance</option>
+                      </select>
+                    </td>
                     <td className="admin_tbl_td">
                       <Link
                         to={`/updateevehical/${item._id}`}

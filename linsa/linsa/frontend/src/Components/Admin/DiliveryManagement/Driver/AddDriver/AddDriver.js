@@ -59,6 +59,7 @@ function AddDriver() {
             <h2 className="form_title">Driver Information</h2>
             
             <div className="form_group">
+              <label className="form_box_item_lable" htmlFor="name">Driver Name</label>
               <input
                 className="form_box_item_input"
                 type="text"
@@ -67,12 +68,11 @@ function AddDriver() {
                 value={inputs.name}
                 onChange={handleChange}
                 required
-                placeholder="Driver Name"
               />
-              <label className="form_box_item_lable" htmlFor="name">Driver Name</label>
             </div>
             
             <div className="form_group">
+              <label className="form_box_item_lable" htmlFor="gmail">Email</label>
               <input
                 className="form_box_item_input"
                 type="email"
@@ -81,12 +81,11 @@ function AddDriver() {
                 value={inputs.gmail}
                 onChange={handleChange}
                 required
-                placeholder="Email"
               />
-              <label className="form_box_item_lable" htmlFor="gmail">Email</label>
             </div>
             
             <div className="form_group">
+              <label className="form_box_item_lable" htmlFor="phone">Phone Number</label>
               <input
                 className="form_box_item_input"
                 type="text"
@@ -96,12 +95,11 @@ function AddDriver() {
                 value={inputs.phone}
                 onChange={handleChange}
                 required
-                placeholder="Phone Number"
               />
-              <label className="form_box_item_lable" htmlFor="phone">Phone Number</label>
             </div>
             
             <div className="form_group">
+              <label className="form_box_item_lable" htmlFor="address">Address</label>
               <input
                 className="form_box_item_input"
                 type="text"
@@ -110,9 +108,7 @@ function AddDriver() {
                 value={inputs.address}
                 onChange={handleChange}
                 required
-                placeholder="Address"
               />
-              <label className="form_box_item_lable" htmlFor="address">Address</label>
             </div>
             
             {error && <div className="driver-error-message">{error}</div>}

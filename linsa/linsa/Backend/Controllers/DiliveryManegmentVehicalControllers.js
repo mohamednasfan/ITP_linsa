@@ -62,7 +62,7 @@ const getById = async (req, res, next) => {
 //Update vehi Details
 const updateVehical = async (req, res, next) => {
   const id = req.params.id;
-  const { name, gmail, address, phone,numberplate } = req.body;
+  const { name, gmail, address, phone, numberplate, status } = req.body;
 
   let vehis;
 
@@ -72,11 +72,13 @@ const updateVehical = async (req, res, next) => {
       gmail: gmail,
       address: address,
       phone: phone,
-      numberplate:numberplate,
+      numberplate: numberplate,
+      status: status
     });
     vehis = await vehis.save();
   } catch (err) {
     console.log(err);
+    return res.status(500).json({ message: "Error updating vehicle", error: err.message });
   }
   if (!vehis) {
     return res

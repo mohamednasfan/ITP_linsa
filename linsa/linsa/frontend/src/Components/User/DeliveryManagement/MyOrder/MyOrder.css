@@ -1,0 +1,194 @@
+/* MyOrder.css - Styles for the MyOrder component */
+
+.myorder-main-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #eaf4fb; /* soft blue */
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #eee;
+  }
+  
+  .myorder-title {
+    text-align: center;
+    margin-bottom: 32px;
+    color: #0074D9;
+    font-family: cursive;
+    font-weight: 500;
+    font-size: 32px;
+  }
+  
+  .myorder-hr-main {
+    border: none;
+    border-top: 2px solid #b3d1f0;
+    margin: 16px 0 8px 0;
+  }
+  
+  .myorder-summary-header {
+    text-align: center;
+    color: #0b4c97;
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+  }
+  
+  .myorder-hr-sub {
+    border: none;
+    border-top: 1px solid #b3d1f0;
+    margin: 0 0 24px 0;
+  }
+  
+  .myorder-flex {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+  }
+  
+  .myorder-items-card {
+    flex: 1.2;
+    background: rgba(255, 255, 255, 0.65); /* semi-transparent white */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 24px;
+    padding: 24px;
+    min-height: 260px;
+    box-shadow: 0 1px 4px #e3eaf2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .myorder-items-title {
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  
+  .myorder-items-list {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .myorder-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px #e3eaf2;
+    padding: 8px;
+    list-style: none;
+  }
+  
+  .myorder-item-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 14px;
+    border: 1px solid #eee;
+    background: #fafbfc;
+  }
+  
+  .myorder-item-desc {
+    font-size: 17px;
+  }
+  
+  .myorder-summary-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  .myorder-summary-card {
+    background: rgba(255, 255, 255, 0.65); /* semi-transparent white */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 4px #e3eaf2;
+    min-height: 60px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+  
+  .myorder-summary-title,
+  .myorder-summary-value,
+  .myorder-address,
+  .myorder-status {
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .myorder-summary-title {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  
+  .myorder-summary-value {
+    font-size: 18px;
+    color: #0b4c97;
+    font-weight: 600;
+  }
+  
+  .myorder-summary-value span {
+    color: #222;
+    font-weight: 400;
+  }
+  
+  .myorder-address {
+    font-size: 16px;
+    color: #222;
+    line-height: 1.6;
+  }
+  
+  .myorder-status {
+    font-size: 16px;
+    color: #222;
+  }
+  
+  .myorder-btn {
+    width: auto;
+    display: block;
+    margin: 32px auto 0 auto;
+    background: #0bb4e3;
+    color: #fff;
+    font-size: 22px;
+    padding: 10px 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    /* transition: background 0.2s; */
+  }
+  .myorder-btn:hover {
+    background: #097bbf;
+  }
+  
+  .myorder-error {
+    color: #e53935;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  
+  .myorder-empty {
+    color: #888;
+    text-align: center;
+    font-size: 16px;
+    margin: 16px 0;
+  }
+  
+  .myorder-summary-card-address {
+    min-height: 90px;
+  }
+  
+  .myorder-summary-card-status {
+    min-height: 60px;
+  } 

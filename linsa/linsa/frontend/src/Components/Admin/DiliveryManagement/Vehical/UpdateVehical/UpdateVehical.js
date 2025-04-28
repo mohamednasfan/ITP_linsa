@@ -108,6 +108,9 @@ function UpdateVehical() {
               value={inputs.numberplate}
               onChange={handleChange}
               name="numberplate"
+              pattern="[0-9]{4}"
+              maxLength="4"
+              title="Please enter exactly 4 digits"
               required
             />
             <br></br>

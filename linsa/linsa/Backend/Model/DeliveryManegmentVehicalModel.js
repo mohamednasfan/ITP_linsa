@@ -23,6 +23,11 @@ const VehicalSchema = new Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ['available', 'busy', 'maintenance'],
+    default: 'available'
+  }
 });
 
 module.exports = mongoose.model("Vehical", VehicalSchema);

@@ -57,7 +57,7 @@ function AddVehical() {
               name="name"
             />
             <br></br>
-            <label className="form_box_item_lable">owener gmail</label>
+            <label className="form_box_item_lable">owner gmail</label>
             <br></br>
             <input
               className="form_box_item_input"
@@ -68,7 +68,7 @@ function AddVehical() {
               required
             />
             <br></br>
-            <label className="form_box_item_lable"> owener phone</label>
+            <label className="form_box_item_lable">owner phone</label>
             <br></br>
             <input
               className="form_box_item_input"
@@ -80,7 +80,7 @@ function AddVehical() {
               required
             />
             <br></br>
-            <label className="form_box_item_lable">owener address</label>
+            <label className="form_box_item_lable">owner address</label>
             <br></br>
             <input
               className="form_box_item_input"
@@ -96,8 +96,18 @@ function AddVehical() {
             <input
               className="form_box_item_input"
               type="text"
+              pattern="[0-9]{4}"
+              maxLength="4"
+              title="Please enter exactly 4 digits"
               value={inputs.numberplate}
-              onChange={handleChange}
+              onChange={(e) => {
+                // Only allow numbers and limit to 4 digits
+                const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
+                setInputs(prev => ({
+                  ...prev,
+                  numberplate: value
+                }));
+              }}
               name="numberplate"
               required
             />
